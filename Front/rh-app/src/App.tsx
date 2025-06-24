@@ -3,6 +3,9 @@ import Sidebar from "./components/Sidebar";
 import Home from "./pages/Home";
 import Employees from "./pages/Employees";
 import Candidats from "./pages/Candidats";
+import AddEmployee from "./pages/AddEmployee";
+import EditEmployee from "./pages/EditEmployee";
+import EmployeeDetails from "./pages/EmployeeDetails";
 
 function App() {
   return (
@@ -13,6 +16,9 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/employees" element={<Employees />} />
           <Route path="/candidats" element={<Candidats />} />
+          <Route path="/employees/add" element={<AddEmployee />} />
+          <Route path="/employees/:id/edit" element={<EditEmployee />} />
+          <Route path="/employees/:id" element={<EmployeeDetails />} />
         </Routes>
       </div>
     </div>
