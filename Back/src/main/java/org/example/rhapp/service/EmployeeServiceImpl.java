@@ -1,12 +1,19 @@
 package org.example.rhapp.service;
 
+import org.example.rhapp.dto.AbsenceDto;
 import org.example.rhapp.dto.EmployeeDto;
+import org.example.rhapp.dto.LeaveDto;
+import org.example.rhapp.model.Absence;
 import org.example.rhapp.model.Employee;
+import org.example.rhapp.model.Leave;
+import org.example.rhapp.repository.AbsenceRepository;
 import org.example.rhapp.repository.EmployeeRepository;
+import org.example.rhapp.repository.LeaveRepository;
 import org.example.rhapp.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -18,6 +25,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
     }
+
+    @Autowired
+    private LeaveRepository leaveRepository;
+
+    @Autowired
+    private AbsenceRepository absenceRepository;
 
     @Override
     public List<EmployeeDto> getAllEmployees() {
@@ -38,6 +51,60 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeDto createEmployee(EmployeeDto dto) {
         Employee emp = toEntity(dto);
         return toDto(employeeRepository.save(emp));
+    }
+
+    @Override
+    public void addLeave(Long employeeId, LeaveDto leaveDto) {
+        Employee e = employeeRepository.findById(employeeId).orElseThrow();
+        Leave leave = new Leave();
+        leave.setStartDate(LocalDate.parse(leaveDto.getStartDate()));
+        leave.setEndDate(LocalDate.parse(leaveDto.getEndDate()));
+        leave.setEmployee(e);
+        leaveRepository.save(leave);
+    }
+
+    @Override
+    public void addAbsence(Long employeeId, AbsenceDto absenceDto) {
+        Employee e = employeeRepository.findById(employeeId).orElseThrow();
+        Absence absence = new Absence();
+        absence.setDate(LocalDate.parse(absenceDto.getDate()));
+        absence.setEmployee(e);
+        absenceRepository.save(absence);
+    }
+
+    @Override
+    public List<LeaveDto> getLeaves(Long employeeId) {
+        return leaveRepository.findByEmployeeId(employeeId)
+                .stream()
+                .map(l -> {
+                    LeaveDto dto = new LeaveDto();
+                    dto.setStartDate(l.getStartDate().toString());
+                    dto.setEndDate(l.getEndDate().toString());
+                    dto.setId(l.getId());
+                    return dto;
+                }).toList();
+    }
+
+    @Override
+    public List<AbsenceDto> getAbsences(Long employeeId) {
+        return absenceRepository.findByEmployeeId(employeeId)
+                .stream()
+                .map(a -> {
+                    AbsenceDto dto = new AbsenceDto();
+                    dto.setDate(a.getDate().toString());
+                    dto.setId(a.getId());
+                    return dto;
+                }).toList();
+    }
+
+    @Override
+    public void deleteLeave(Long leaveId) {
+        leaveRepository.deleteById(leaveId);
+    }
+
+    @Override
+    public void deleteAbsence(Long absenceId) {
+        absenceRepository.deleteById(absenceId);
     }
 
     @Override
