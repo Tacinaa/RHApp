@@ -29,7 +29,7 @@ export default function AddEmployee() {
     axios
       .post("http://localhost:8080/api/employees", {
         ...form,
-        salaire: Number(form.salaire) // s'assurer que c’est bien un nombre
+        salaire: Number(form.salaire)
       })
       .then(() => {
         navigate("/employees");
