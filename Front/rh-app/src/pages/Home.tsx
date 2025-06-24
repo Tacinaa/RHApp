@@ -14,20 +14,23 @@ export default function Home() {
   return (
     <div className="container d-flex justify-content-center align-items-center vh-100">
       <div className="row w-100 justify-content-center gap-5">
-        <div className="col-md-3">
-          <Link to="/employees" className="text-decoration-none">
-            <div className="border rounded p-5 text-center shadow-sm">
-              <h4>{employeeCount} Employés</h4>
+        <Link to="/employees" className="col-md-3 text-decoration-none">
+          <div className="card text-center shadow border-0 hover-card bg-primary text-white">
+            <div className="card-body p-5">
+              <i className="bi bi-people-fill fs-1 mb-3"></i>
+              <h4 className="card-title">{employeeCount} Employés</h4>
             </div>
-          </Link>
-        </div>
-        <div className="col-md-3">
-          <Link to="/candidats" className="text-decoration-none">
-            <div className="border rounded p-5 text-center shadow-sm">
-              <h4>{candidatCount} Candidats</h4>
+          </div>
+        </Link>
+
+        <Link to="/candidats" className="col-md-3 text-decoration-none">
+          <div className="card text-center shadow border-0 hover-card bg-info text-white">
+            <div className="card-body p-5">
+              <i className="bi bi-person-badge-fill fs-1 mb-3"></i>
+              <h4 className="card-title">{candidatCount} Candidats</h4>
             </div>
-          </Link>
-        </div>
+          </div>
+        </Link>
       </div>
     </div>
   );
